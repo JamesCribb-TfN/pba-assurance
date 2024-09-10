@@ -5,16 +5,22 @@ import pandas as pd
 
 @dataclasses.dataclass
 class Workbooks:
-    workbook1: pd.DataFrame
-    workbook2: pd.DataFrame
+    workbook1_file_path: str
+    workbook2_file_path: str
+    df1: pd.DataFrame = None
+    df2: pd.DataFrame = None
 
+    def _load_accessibility(self, str_file_path: str) -> None:
+        self.df1 = pd.read_excel(str_file_path, sheet_name='Accessibility', header=1)
+        self.df2 = pd.read_excel(str_file_path, sheet_name='Accessibility', header=1)
 
-def _load_accessibility(str_file_path: str) -> pd.DataFrame:
-    return pd.read_excel(str_file_path, sheet_name='Accessibility', header=1)
+    def compare_accessibility(self) -> None:
+        print(self.df1['Total score'])
 
 
 def compare(workbook1_file_path: str, workbook2_file_path: str) -> None:
-    wb1 = _load_accessibility(workbook1_file_path)
-    wb2 = _load_accessibility(workbook2_file_path)
-    wbs = Workbooks(workbook1=wb1, workbook2=wb2)
+    wbs = Workbooks(workbook1_file_path, workbook2_file_path)
+    wbs.compare_accessibility()
+
+
 
